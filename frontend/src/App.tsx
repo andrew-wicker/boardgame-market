@@ -3,8 +3,9 @@ import './App.css';
 import Hero from './components/Hero';
 import Search from './components/Search';
 import TopBar from './components/TopBar';
+import SearchResultCard from './components/SearchResultCard';
 
-interface SearchResult {
+export interface SearchResult {
   id: string;
   name: string;
   yearpublished: string | null;
@@ -39,13 +40,11 @@ function App() {
         setSearchTerm={setSearchTerm}
         handleSearch={handleSearch}
       />
-      {searchResults.map((item) => (
-        <div>
-          <p>{item.name}</p>
-          <p>{item.type}</p>
-          <p>{item.yearpublished}</p>
-        </div>
-      ))}
+      <div className='flex basis-auto justify-start flex-wrap'>
+        {searchResults.map((item) => (
+          <SearchResultCard searchResult={item} />
+        ))}
+      </div>
     </div>
   );
 }
