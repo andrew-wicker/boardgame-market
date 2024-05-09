@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function Hero() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = () => {
-    console.log(`Searching for ${searchTerm}`);
+    fetch(`/bg/bgquery?name=${encodeURIComponent(searchTerm)}`, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        data.map((item) => {});
+      })
+      .catch((err) => {
+        console.error(`Error fetching data: `, err);
+      });
   };
 
   return (
-    <div className='bg-white text-night-500 text-center py-24 flex justify-center items-center flex-col'>
+    <div className='bg-white text-night-500 text-center py-24 flex justify-center items-center flex-col font-sans'>
       <div className='w-screen  max-h-[40vh] bg-emerald-400 overflow-hidden object-center mb-4'>
         <img
           src='/images/hero-img.webp'

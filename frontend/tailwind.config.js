@@ -1,8 +1,15 @@
 /** @type {import('tailwindcss').Config} */
+
+// const defaultTheme = require('tailwindcss/defaultTheme');
+import defaultTheme from 'tailwindcss/defaultTheme';
+
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Proxima Nova"', ...defaultTheme.fontFamily.sans],
+      },
       colors: {
         buff: { DEFAULT: '#e59f71', 100: '#3a1d0b', 200: '#733b15', 300: '#ad5820', 400: '#da7837', 500: '#e59f71', 600: '#eab28d', 700: '#efc6aa', 800: '#f5d9c6', 900: '#faece3' },
         sinopia: { DEFAULT: '#ba5a31', 100: '#25120a', 200: '#4a2414', 300: '#6f361e', 400: '#944827', 500: '#ba5a31', 600: '#d17751', 700: '#dc997c', 800: '#e8bba8', 900: '#f3ddd3' },

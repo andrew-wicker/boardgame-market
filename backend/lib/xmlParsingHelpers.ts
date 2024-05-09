@@ -5,7 +5,7 @@ interface GameObject {
     type: string;
     value: string;
   };
-  yearPublished: {
+  yearpublished: {
     value: string;
   };
 }
@@ -33,7 +33,7 @@ export interface GameObjects {
 export interface ParsedGame {
   id: string | null;
   name: string | null;
-  yearPublished: string | null;
+  yearpublished: string | null;
   type: string | null;
 }
 
@@ -42,7 +42,7 @@ export const parseSearchResults = (items: GameObject[]): ParsedGame[] => {
     (item): ParsedGame => ({
       id: item.id,
       name: item.name.value,
-      yearPublished: item.yearPublished ? item.yearPublished.value : null,
+      yearpublished: item.yearpublished ? item.yearpublished.value : null,
       type: item.type,
     })
   );
