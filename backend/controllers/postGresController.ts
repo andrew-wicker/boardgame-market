@@ -1,11 +1,22 @@
+import express from "express";
+import bcrypt from "bcrypt";
 import { Pool } from "pg";
 
-export const pool = new Pool({
-  user: "username",
-  host: "localhost",
-  database: "game-collection",
-  password: "games",
-  port: 5432,
+// const app = express();
+// app.use(express.json());
+
+const PG_USERNAME = process.env.PG_USERNAME;
+const PG_PASSWORD = process.env.PG_PASSWORD;
+const PG_HOST = process.env.PG_HOST;
+const PG_PORT = parseInt(process.env.PG_PORT || "5432");
+const PG_DATABASE = process.env.PG_DATABASE;
+
+const pool = new Pool({
+  user: PG_USERNAME,
+  password: PG_PASSWORD,
+  host: PG_HOST,
+  database: PG_DATABASE,
+  port: PG_PORT,
 });
 
-export async function saveGameDetails(req, res, next) {}
+export default pool;

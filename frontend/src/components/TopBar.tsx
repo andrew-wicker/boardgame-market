@@ -29,7 +29,20 @@ export default function TopBar() {
             isOpen={modalOpen}
             onRequestClose={() => setModalOpen(false)}
             contentLabel="User Authentication"
-            className="absolute bottom-1/4 left-1/4 right-1/4 top-1/4 rounded bg-white p-5 shadow-lg"
+            className="fixed inset-0 h-auto w-96 rounded-2xl bg-white p-5 shadow-lg "
+            style={{
+              overlay: {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              },
+              content: {
+                top: '50%',
+                left: '50%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)',
+              },
+            }}
           >
             <AuthForm />
           </Modal>

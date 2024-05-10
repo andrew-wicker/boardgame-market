@@ -7,7 +7,6 @@ import {
 } from "../lib/xmlParsingHelpers";
 
 import { parser } from "../lib/bgXmlParser";
-const util = require("util");
 
 interface BoardGameQuery {
   gameSearch: (req: Request, res: Response, next: NextFunction) => void;
