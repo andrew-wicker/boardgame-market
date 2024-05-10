@@ -31,34 +31,6 @@ export default function SearchResultCard({
   if (!gameDetails) return null;
   if (gameDetails.type !== 'boardgame') return null;
 
-  // return (
-  //   <div className="w-64 max-h-64 bg-white border border-sinopia rounded-lg shadow dark:bg-sinopia-300 dark:border-sinopia-700 flex flex-col justify-end">
-  //     <div>
-  //       <img
-  //         src={gameDetails.image}
-  //         className="aspect-auto "
-  //       />
-  //     </div>
-  //     <div className="p-5">
-  //       <h5 className="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">
-  //         {searchResult.name}
-  //       </h5>
-
-  //       <p className="mb-3 font-normal text-night-900 dark:text-night-900">
-  //         {searchResult.type} | {searchResult.yearpublished}
-  //       </p>
-  //       <div className="text-left text-white overflow-y-auto max-h-32">
-  //         <p>{gameDetails.description}</p>
-  //       </div>
-  //       <a
-  //         href="#"
-  //         className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-  //       >
-  //         Add to Collection
-  //       </a>
-  //     </div>
-  //   </div>
-  // );
   return (
     <div className="mx-8 mb-8 flex h-96 w-72 flex-col items-center justify-center rounded-xl border border-b-night-800 border-l-night-800 shadow-lg">
       <div className="relative flex h-56 w-56 items-center justify-center">
@@ -68,12 +40,7 @@ export default function SearchResultCard({
         />
       </div>
       <div className="mt-4 h-24 w-full rounded-b-xl border-night-700 px-2">
-        <h3
-          className="truncate text-xl font-bold"
-          style={{ animation: 'scroll-text 5s ease 0s 2 normal' }}
-        >
-          {gameDetails.name}
-        </h3>
+        <h3 className="truncate text-xl font-bold">{gameDetails.name}</h3>
         <h5>| {gameDetails.yearPublished} |</h5>
         <button className="mt-4 rounded bg-emerald-700 px-4 py-2 font-bold hover:border-emerald-200 hover:bg-emerald-400 hover:text-emerald-100">
           Add to Collection
