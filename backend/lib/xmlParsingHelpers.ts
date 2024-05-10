@@ -1,4 +1,4 @@
-interface GameObject {
+export interface GameObject {
   type: string;
   id: string;
   name: {
@@ -10,7 +10,7 @@ interface GameObject {
   };
 }
 
-interface GameDetailObject {
+export interface GameDetailObject {
   type: string;
   id: string;
   thumbnail: string;
@@ -38,6 +38,10 @@ export interface ParsedGame {
 }
 
 export const parseSearchResults = (items: GameObject[]): ParsedGame[] => {
+  // console.log("items: ", items);
+  if (!Array.isArray(items)) {
+    items = [items];
+  }
   return items.map(
     (item): ParsedGame => ({
       id: item.id,

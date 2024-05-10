@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/bg", bggApiRouter, (req, res) => {
-  console.log(res.locals.games);
+  // console.log(res.locals.games);
   return res.status(200).json(res.locals.games);
 });
 

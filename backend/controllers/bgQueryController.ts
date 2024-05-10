@@ -1,5 +1,10 @@
 import express, { Request, Response, NextFunction } from "express";
-import { parseSearchResults, GameObjects } from "../lib/xmlParsingHelpers";
+import {
+  parseSearchResults,
+  GameObjects,
+  GameObject,
+  GameDetailObject,
+} from "../lib/xmlParsingHelpers";
 
 import { parser } from "../lib/bgXmlParser";
 const util = require("util");
@@ -9,6 +14,24 @@ interface BoardGameQuery {
   gameDetailSearch: (req: Request, res: Response, next: NextFunction) => void;
 }
 
+interface NameObject {
+  value: string;
+}
+
+type NameArrayOrObject = NameObject[] | NameObject;
+
+const getFirstIndexOrDefault = (
+  obj: NameArrayOrObject,
+  defaultValue: string = ""
+) => {
+  if (Array.isArray(obj)) {
+    return obj[0].value;
+  } else if (obj && obj.value) {
+    return obj.value;
+  }
+  return defaultValue;
+};
+
 const bgQuery: BoardGameQuery = {
   gameSearch: async function (req, res, next) {
     const { name } = req.query;
@@ -16,20 +39,24 @@ const bgQuery: BoardGameQuery = {
       const response = await fetch(
         `https://boardgamegeek.com/xmlapi2/search?query=${name}&type=boardgame`
       );
+
       const text = await response.text();
+
       parser.parseString(text, (err, result: { items: GameObjects }) => {
         if (err) {
           console.error(err);
           res.status(500).send("Failed to parse XML");
-        } else {
-          if (result.items && result.items.item) {
-            const games = parseSearchResults(result.items.item);
-            res.locals = { games };
-            next();
-          } else {
-            res.status(404).send("No games found");
-          }
+          return;
         }
+
+        if (!result.items || !result.items.item) {
+          res.status(404).send("No games found");
+          return;
+        }
+
+        const games = parseSearchResults(result.items.item);
+        res.locals.games = games;
+        next();
       });
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -43,18 +70,18 @@ const bgQuery: BoardGameQuery = {
         `https://boardgamegeek.com/xmlapi2/thing?id=${id}`
       );
       const text = await response.text();
-      console.log(text);
+
       parser.parseString(text, (err, result) => {
         if (err) {
           console.error(err);
           res.status(500).send("Failed to parse XML");
-        } else if (result) {
+        } else if (result && result.items && result.items.item) {
           const gameDetails = {
             type: result.items.item.type,
             id: result.items.item.id,
             thumbnail: result.items.item.thumbnail,
             image: result.items.item.image,
-            name: result.items.item.name[0].value,
+            name: getFirstIndexOrDefault(result.items.item.name),
             description: result.items.item.description,
             yearPublished: result.items.item.yearpublished.value,
             minPlayers: result.items.item.minplayers.value,
@@ -64,7 +91,6 @@ const bgQuery: BoardGameQuery = {
             maxPlayTime: result.items.item.maxplaytime.value,
             minimumAge: result.items.item.minage.value,
           };
-          console.log(util.inspect(gameDetails, false, null, true));
           res.locals = { gameDetails };
           next();
         } else {

@@ -18,9 +18,12 @@ function App() {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
   const handleSearch = () => {
-    fetch(`/bg/bgquery?name=${encodeURIComponent(searchTerm)}`, {
-      method: 'GET',
-    })
+    fetch(
+      `http://localhost:3000/bg/bgquery?name=${encodeURIComponent(searchTerm)}`,
+      {
+        method: 'GET',
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         setSearchResults(data);
@@ -32,7 +35,7 @@ function App() {
   };
 
   return (
-    <div className='flex flex-col justify-between'>
+    <div className="flex flex-col justify-between">
       <TopBar />
       <Hero />
       <Search
@@ -40,9 +43,12 @@ function App() {
         setSearchTerm={setSearchTerm}
         handleSearch={handleSearch}
       />
-      <div className='flex basis-auto justify-start flex-wrap'>
-        {searchResults.map((item) => (
-          <SearchResultCard searchResult={item} />
+      <div className="flex min-w-full justify-between items-center flex-wrap mx-auto mt-16">
+        {searchResults.map((item, index) => (
+          <SearchResultCard
+            key={index}
+            searchResult={item}
+          />
         ))}
       </div>
     </div>
