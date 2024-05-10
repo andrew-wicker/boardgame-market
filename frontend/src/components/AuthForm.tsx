@@ -1,6 +1,12 @@
 import { useState } from 'react';
+// import { useAuth } from '../lib/utils';
+import { useAuth } from './AuthContext';
+interface AuthFormProps {
+  closeModal: () => void;
+}
 
-export default function AuthForm() {
+export default function AuthForm({ closeModal }: AuthFormProps) {
+  const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -24,6 +30,12 @@ export default function AuthForm() {
     const data = await response.json();
     if (data.success) {
       console.log(`${isSignUp ? 'Signup' : 'Login'} successful!`);
+      if (!isSignUp) {
+        login(data.token);
+        closeModal();
+      } else {
+        setIsSignUp(false);
+      }
     } else {
       console.error(`${isSignUp ? 'Signup' : 'Login'} failed!`);
     }

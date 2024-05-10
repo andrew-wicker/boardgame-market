@@ -44,7 +44,7 @@ export default function TopBar() {
               },
             }}
           >
-            <AuthForm />
+            <AuthForm closeModal={() => setModalOpen(false)} />
           </Modal>
         </div>
       </nav>
