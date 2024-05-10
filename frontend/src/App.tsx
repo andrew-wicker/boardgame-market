@@ -43,7 +43,7 @@ function App() {
         setSearchTerm={setSearchTerm}
         handleSearch={handleSearch}
       />
-      <div className="flex min-w-full justify-between items-center flex-wrap mx-auto mt-16">
+      <div className="flex min-w-full justify-center items-center flex-wrap mx-auto mt-16">
         {searchResults.map((item, index) => (
           <SearchResultCard
             key={index}

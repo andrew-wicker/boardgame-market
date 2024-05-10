@@ -15,7 +15,7 @@ export default function SearchResultCard({
     const fetchGameDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/bg/bgquery/${searchResult.id}`
+          `http://localhost:3000/bg/bgquery/${searchResult.id}`,
         );
         const data = await response.json();
         setGameDetails(data);
@@ -29,6 +29,7 @@ export default function SearchResultCard({
   }, [searchResult.id]);
 
   if (!gameDetails) return <div>Loading...</div>;
+  if (gameDetails.type !== 'boardgame') return null;
 
   // return (
   //   <div className="w-64 max-h-64 bg-white border border-sinopia rounded-lg shadow dark:bg-sinopia-300 dark:border-sinopia-700 flex flex-col justify-end">
@@ -59,12 +60,15 @@ export default function SearchResultCard({
   //   </div>
   // );
   return (
-    <div className="flex flex-col mb-8 max-w-72 overflow-scroll">
-      <div className="w-72 h-56 border-2 border-night-700 rounded-t-xl overflow-hidden shadow-md">
-        <img src={gameDetails.image} />
+    <div className="mx-8 mb-8 flex max-w-72 flex-col overflow-scroll">
+      <div className="h-72 w-auto overflow-hidden rounded-t-xl border-2 border-night-700 shadow-md">
+        <img
+          src={gameDetails.image}
+          className=" left-0 top-0 h-72 w-auto"
+        />
       </div>
-      <div className="h-16 rounded-b-xl border-2 border-night-700">
-        <h3 className="text-xl font-bold truncate">{gameDetails.name}</h3>
+      <div className="h-24 rounded-b-xl border-2 border-night-700">
+        <h3 className="my-2 truncate text-xl font-bold">{gameDetails.name}</h3>
         <h5>
           {gameDetails.yearPublished} | {gameDetails.type}
         </h5>
