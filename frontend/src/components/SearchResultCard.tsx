@@ -28,7 +28,7 @@ export default function SearchResultCard({
     fetchGameDetails();
   }, [searchResult.id]);
 
-  if (!gameDetails) return <div>Loading...</div>;
+  if (!gameDetails) return null;
   if (gameDetails.type !== 'boardgame') return null;
 
   // return (
@@ -60,18 +60,24 @@ export default function SearchResultCard({
   //   </div>
   // );
   return (
-    <div className="mx-8 mb-8 flex max-w-72 flex-col overflow-scroll">
-      <div className="h-72 w-auto overflow-hidden rounded-t-xl border-2 border-night-700 shadow-md">
+    <div className="mx-8 mb-8 flex h-96 w-72 flex-col items-center justify-center rounded-xl border border-b-night-800 border-l-night-800 shadow-lg">
+      <div className="relative flex h-56 w-56 items-center justify-center">
         <img
           src={gameDetails.image}
-          className=" left-0 top-0 h-72 w-auto"
+          className="max-h-full max-w-full rounded-2xl shadow-lg"
         />
       </div>
-      <div className="h-24 rounded-b-xl border-2 border-night-700">
-        <h3 className="my-2 truncate text-xl font-bold">{gameDetails.name}</h3>
-        <h5>
-          {gameDetails.yearPublished} | {gameDetails.type}
-        </h5>
+      <div className="mt-4 h-24 w-full rounded-b-xl border-night-700 px-2">
+        <h3
+          className="truncate text-xl font-bold"
+          style={{ animation: 'scroll-text 5s ease 0s 2 normal' }}
+        >
+          {gameDetails.name}
+        </h3>
+        <h5>| {gameDetails.yearPublished} |</h5>
+        <button className="mt-4 rounded bg-emerald-700 px-4 py-2 font-bold hover:border-emerald-200 hover:bg-emerald-400 hover:text-emerald-100">
+          Add to Collection
+        </button>
       </div>
     </div>
   );

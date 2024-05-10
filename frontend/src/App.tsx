@@ -22,7 +22,7 @@ function App() {
       `http://localhost:3000/bg/bgquery?name=${encodeURIComponent(searchTerm)}`,
       {
         method: 'GET',
-      }
+      },
     )
       .then((res) => res.json())
       .then((data) => {
@@ -43,7 +43,7 @@ function App() {
         setSearchTerm={setSearchTerm}
         handleSearch={handleSearch}
       />
-      <div className="flex min-w-full justify-center items-center flex-wrap mx-auto mt-16">
+      <div className="mx-auto mt-16 flex w-full flex-wrap items-center justify-center">
         {searchResults.map((item, index) => (
           <SearchResultCard
             key={index}
