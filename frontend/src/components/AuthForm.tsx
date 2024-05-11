@@ -63,7 +63,7 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
             </label>
             <input
               id="email"
-              className="mx-2 mb-4 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500"
+              className="mx-2 mb-4 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500 focus:border-emerald-400 focus:outline-none"
               type="email"
               placeholder="E-Mail"
               value={email}
@@ -78,7 +78,7 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
           Username
         </label>
         <input
-          className="mx-2 mb-4 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500"
+          className="mx-2 mb-4 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500 focus:border-emerald-400 focus:outline-none"
           type="text"
           placeholder="Username"
           value={username}
@@ -91,7 +91,7 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
           Password
         </label>
         <input
-          className="mx-2 mb-8 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500"
+          className="mx-2 mb-8 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500 focus:border-emerald-400 focus:outline-none"
           type="password"
           placeholder="Password"
           value={password}

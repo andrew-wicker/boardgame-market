@@ -3,7 +3,7 @@ export default function Hero() {
     <div className="flex flex-col items-center justify-center bg-white text-center font-sans text-night-500">
       <div className="mb-4  max-h-[40vh] w-screen overflow-hidden bg-emerald-400 object-center">
         <img
-          src="/images/vector-hero.webp"
+          src="/images/meeple-hero-crop.png"
           className="h-full w-full object-contain "
         />
       </div>

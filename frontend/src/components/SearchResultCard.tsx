@@ -28,6 +28,10 @@ export default function SearchResultCard({
     fetchGameDetails();
   }, [searchResult.id]);
 
+  // const handleAddToCollection = (e) => {
+  //   e.preventDefault();
+  // };
+
   if (!gameDetails) return null;
   if (gameDetails.type !== 'boardgame') return null;
 
