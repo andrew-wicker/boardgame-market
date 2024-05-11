@@ -77,18 +77,18 @@ const bgQuery: BoardGameQuery = {
         } else if (result && result.items && result.items.item) {
           const gameDetails = {
             type: result.items.item.type,
-            id: result.items.item.id,
-            thumbnail: result.items.item.thumbnail,
-            image: result.items.item.image,
-            name: getFirstIndexOrDefault(result.items.item.name),
+            bgg_id: result.items.item.id,
+            thumbnail_url: result.items.item.thumbnail,
+            image_url: result.items.item.image,
+            title: getFirstIndexOrDefault(result.items.item.name),
             description: result.items.item.description,
-            yearPublished: result.items.item.yearpublished.value,
-            minPlayers: result.items.item.minplayers.value,
-            maxPlayers: result.items.item.maxplayers.value,
-            playingTime: result.items.item.playingtime.value,
-            minPlayTime: result.items.item.minplaytime.value,
-            maxPlayTime: result.items.item.maxplaytime.value,
-            minimumAge: result.items.item.minage.value,
+            year_published: result.items.item.yearpublished.value,
+            min_players: result.items.item.minplayers.value,
+            max_players: result.items.item.maxplayers.value,
+            playing_time: result.items.item.playingtime.value,
+            min_play_time: result.items.item.minplaytime.value,
+            max_play_time: result.items.item.maxplaytime.value,
+            min_age: result.items.item.minage.value,
           };
           res.locals = { gameDetails };
           next();

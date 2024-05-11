@@ -69,13 +69,13 @@ export default function SearchResultCard({
     <div className="mx-8 mb-8 flex h-96 w-72 flex-col items-center justify-center rounded-xl border border-b-night-800 border-l-night-800 shadow-lg">
       <div className="relative flex h-56 w-56 items-center justify-center">
         <img
-          src={gameDetails.image}
+          src={gameDetails.image_url}
           className="max-h-full max-w-full rounded-2xl shadow-lg"
         />
       </div>
       <div className="mt-4 h-24 w-full rounded-b-xl border-night-700 px-2">
-        <h3 className="truncate text-xl font-bold">{gameDetails.name}</h3>
-        <h5>| {gameDetails.yearPublished} |</h5>
+        <h3 className="truncate text-xl font-bold">{gameDetails.title}</h3>
+        <h5>| {gameDetails.year_published} |</h5>
         <button
           className="mt-4 rounded bg-emerald-700 px-4 py-2 font-bold hover:border-emerald-200 hover:bg-emerald-400 hover:text-emerald-100"
           onClick={handleAddToCollection}

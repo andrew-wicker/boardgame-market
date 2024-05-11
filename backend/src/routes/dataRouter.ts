@@ -7,8 +7,11 @@ const router = express.Router();
 router.post(
   '/collection/add',
   authController.verifyToken,
-  dataController.addGameToGamesTable
-  // dataController.addGameToCollection
+  dataController.addGameToGamesTable,
+  dataController.addGameToCollection,
+  (req, res) => {
+    return res.json({ success: true, game: res.locals.result });
+  }
 );
 router.post('/gameData', (req, res, next) => {
   console.log(req.body);
