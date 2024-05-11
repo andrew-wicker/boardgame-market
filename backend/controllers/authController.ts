@@ -12,6 +12,7 @@ const SECRET_KEY =
 interface AuthController {
   login: (req: Request, res: Response, next: NextFunction) => void;
   create: (req: Request, res: Response, next: NextFunction) => void;
+  verifyToken: (req: Request, res: Response, next: NextFunction) => void;
 }
 
 const authController: AuthController = {
@@ -64,6 +65,22 @@ const authController: AuthController = {
       res
         .status(500)
         .json({ success: false, message: "Server error: ", error });
+    }
+  },
+  verifyToken: function (req, res, next) {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).send("Access Denied / Unauthorized request");
+    }
+
+    try {
+      const decoded = jwt.verify(token, SECRET_KEY);
+      req.user = decoded;
+      next();
+    } catch (error) {
+      res.status(400).send("Invalid Token");
     }
   },
 };

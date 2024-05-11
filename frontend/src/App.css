@@ -4,3 +4,9 @@
   padding: 2rem;
   text-align: center;
 }
+
+.ReactModalPortal {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+}

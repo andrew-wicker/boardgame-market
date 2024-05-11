@@ -1,9 +1,15 @@
 import { createContext, useState, useContext, ReactNode } from 'react';
 import Cookies from 'js-cookie';
 
+interface User {
+  userId: string;
+  username?: string | null;
+  email?: string | null;
+}
+
 interface AuthContextType {
   isAuthed: boolean;
-  user: never | null;
+  user: User | null;
   login: (token: string, userId: string) => void;
   logout: () => void;
 }
@@ -23,13 +29,12 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthed, setIsAuthed] = useState(!!Cookies.get('token'));
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const login = (token: string, userId: string) => {
     Cookies.set('token', token, { expires: 7 });
     localStorage.setItem('userId', userId);
-    console.log('token is: ', token);
-    console.log('userId: ', userId);
+    setUser({ userId });
     setIsAuthed(true);
   };
 

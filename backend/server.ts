@@ -5,6 +5,7 @@ import express from "express";
 import path from "path";
 import bggApiRouter from "./routes/bggApiRouter";
 import authRouter from "./routes/authRouter";
+import dataRouter from "./routes/dataRouter";
 import cors from "cors";
 
 const app = express();
@@ -21,7 +22,7 @@ app.use("/bg", bggApiRouter, (req, res) => {
 
 app.use("/auth", authRouter);
 
-// app.use("/");
+app.use("/data", dataRouter);
 
 const frontendPath = path.join(__dirname, "..", "frontend");
 

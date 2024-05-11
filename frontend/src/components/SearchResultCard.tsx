@@ -33,7 +33,7 @@ export default function SearchResultCard({
   }, [searchResult.id]);
 
   const handleAddToCollection = async () => {
-    if (!isAuthed || !user) {
+    if (!isAuthed || !user || !gameDetails) {
       alert('You must be loggeed in to add games to your collection.');
       return;
     }
