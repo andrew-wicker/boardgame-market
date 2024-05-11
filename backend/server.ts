@@ -3,7 +3,7 @@ dotenv.config();
 
 import express from "express";
 import path from "path";
-import bggApiRouter from "./routes/bggApi";
+import bggApiRouter from "./routes/bggApiRouter";
 import authRouter from "./routes/authRouter";
 import cors from "cors";
 
@@ -20,6 +20,8 @@ app.use("/bg", bggApiRouter, (req, res) => {
 });
 
 app.use("/auth", authRouter);
+
+// app.use("/");
 
 const frontendPath = path.join(__dirname, "..", "frontend");
 

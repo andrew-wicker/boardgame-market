@@ -3,12 +3,14 @@ import Cookies from 'js-cookie';
 
 interface AuthContextType {
   isAuthed: boolean;
-  login: (token: string) => void;
+  user: never | null;
+  login: (token: string, userId: string) => void;
   logout: () => void;
 }
 
 const defaultAuthContext: AuthContextType = {
   isAuthed: false,
+  user: null,
   login: () => {},
   logout: () => {},
 };
@@ -21,22 +23,25 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthed, setIsAuthed] = useState(!!Cookies.get('token'));
+  const [user, setUser] = useState(null);
 
-  const login = (token: string) => {
+  const login = (token: string, userId: string) => {
     Cookies.set('token', token, { expires: 7 });
-    // localStorage.setItem('token', token);
+    localStorage.setItem('userId', userId);
     console.log('token is: ', token);
+    console.log('userId: ', userId);
     setIsAuthed(true);
   };
 
   const logout = () => {
     // localStorage.removeItem('token');
+    setUser(null);
     Cookies.remove('token');
     setIsAuthed(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthed, login, logout }}>
+    <AuthContext.Provider value={{ isAuthed, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
