@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = (token: string) => {
     Cookies.set('token', token, { expires: 7 });
     // localStorage.setItem('token', token);
+    console.log('token is: ', token);
     setIsAuthed(true);
   };
 
@@ -42,4 +43,5 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 };
 
 // todo research the 'fast refresh' warning and consider refactor
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);

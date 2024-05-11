@@ -54,15 +54,29 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
         className="flex flex-col items-center justify-between"
       >
         {isSignUp && (
-          <input
-            className="mx-2 mb-4 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500"
-            type="email"
-            placeholder="E-Mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></input>
+          <>
+            <label
+              htmlFor="email"
+              className="hidden"
+            >
+              E-Mail
+            </label>
+            <input
+              id="email"
+              className="mx-2 mb-4 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500"
+              type="email"
+              placeholder="E-Mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            ></input>
+          </>
         )}
-
+        <label
+          htmlFor="username"
+          className="hidden"
+        >
+          Username
+        </label>
         <input
           className="mx-2 mb-4 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500"
           type="text"
@@ -70,6 +84,12 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         ></input>
+        <label
+          htmlFor="password"
+          className="hidden"
+        >
+          Password
+        </label>
         <input
           className="mx-2 mb-8 w-64 rounded-2xl border-2 border-night-900 px-4 py-2 text-night-500"
           type="password"

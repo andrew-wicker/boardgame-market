@@ -1,6 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import pool from "./postGresController";
+import jwt from "jsonwebtoken";
+
+const SECRET_KEY =
+  process.env.SECRET_KEY ||
+  (() => {
+    throw new Error("SECRET_KEY is not defined in your environment variables");
+  })();
 
 interface AuthController {
   login: (req: Request, res: Response, next: NextFunction) => void;
@@ -9,7 +16,6 @@ interface AuthController {
 
 const authController: AuthController = {
   login: async function (req, res, next) {
-    console.log("req.body.username", req.body.username);
     const { username, password } = req.body;
     const query = `SELECT user_id, username, password_hash FROM users WHERE username = $1`;
 
@@ -22,7 +28,15 @@ const authController: AuthController = {
           user.password_hash
         );
         if (validPassword) {
-          res.json({ success: true });
+          const token = jwt.sign(
+            {
+              user_id: user.user_id,
+              username: user.username,
+            },
+            SECRET_KEY,
+            { expiresIn: "7d" }
+          );
+          res.json({ success: true, token });
         } else {
           res.status(401).json({ success: false, message: "Invalid password" });
         }

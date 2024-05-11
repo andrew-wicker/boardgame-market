@@ -2,11 +2,21 @@ import { useState } from 'react';
 import { SquareUserRound } from 'lucide-react';
 import Modal from 'react-modal';
 import AuthForm from './AuthForm';
+import { useAuth } from './AuthContext';
 
 Modal.setAppElement('#root');
 
 export default function TopBar() {
   const [modalOpen, setModalOpen] = useState(false);
+  const { isAuthed, logout } = useAuth();
+
+  const handleAuthClick = () => {
+    if (isAuthed) {
+      logout();
+    } else {
+      setModalOpen(true);
+    }
+  };
 
   return (
     <>
@@ -16,14 +26,15 @@ export default function TopBar() {
             src="/images/logo.png"
             className="h-auto w-20"
           />
-          <div className="mt-2 text-2xl">K-Lax</div>
+          <div className="mt-2 text-4xl font-bold">K-LAX</div>
         </div>
-        <div className="mr-4 flex items-center justify-center">
+        <div className="mx-4 flex flex-col items-center justify-center">
           <button
-            className="text-emerald-700 hover:text-emerald-200"
-            onClick={() => setModalOpen(true)}
+            className="flex flex-col items-center justify-center text-center text-emerald-700 hover:text-emerald-200"
+            onClick={handleAuthClick}
           >
             <SquareUserRound size={36} />
+            {isAuthed ? 'Logout' : 'Login'}
           </button>
           <Modal
             isOpen={modalOpen}
