@@ -1,12 +1,12 @@
-import express, { Request, Response, NextFunction } from "express";
-import bcrypt from "bcrypt";
-import pool from "./postGresController";
-import jwt from "jsonwebtoken";
+import express, { Request, Response, NextFunction } from 'express';
+import bcrypt from 'bcrypt';
+import pool from './postGresController';
+import jwt from 'jsonwebtoken';
 
 const SECRET_KEY =
   process.env.SECRET_KEY ||
   (() => {
-    throw new Error("SECRET_KEY is not defined in your environment variables");
+    throw new Error('SECRET_KEY is not defined in your environment variables');
   })();
 
 interface AuthController {
@@ -35,23 +35,23 @@ const authController: AuthController = {
               username: user.username,
             },
             SECRET_KEY,
-            { expiresIn: "7d" }
+            { expiresIn: '7d' }
           );
           res.json({ success: true, token });
         } else {
-          res.status(401).json({ success: false, message: "Invalid password" });
+          res.status(401).json({ success: false, message: 'Invalid password' });
         }
       } else {
-        res.status(404).json({ success: false, message: "User not fount" });
+        res.status(404).json({ success: false, message: 'User not fount' });
       }
     } catch (error) {
       res
         .status(500)
-        .json({ success: false, message: "Server error: ", error });
+        .json({ success: false, message: 'Server error: ', error });
     }
   },
   create: async function (req, res, next) {
-    console.log("req.body.username: ", req.body.username);
+    console.log('req.body.username: ', req.body.username);
     const { username, password, email } = req.body;
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
@@ -59,28 +59,29 @@ const authController: AuthController = {
     try {
       const query = `INSERT INTO users (username, password_hash, email) VALUES ($1, $2, $3) RETURNING *`;
       const result = await pool.query(query, [username, passwordHash, email]);
-      console.log("result: ", result);
+      console.log('result: ', result);
       res.json({ success: true, user: result.rows[0] });
     } catch (error) {
       res
         .status(500)
-        .json({ success: false, message: "Server error: ", error });
+        .json({ success: false, message: 'Server error: ', error });
     }
   },
   verifyToken: function (req, res, next) {
     const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.split(" ")[1];
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log(token);
 
     if (!token) {
-      return res.status(401).send("Access Denied / Unauthorized request");
+      return res.status(401).send('Access Denied / Unauthorized request');
     }
 
     try {
       const decoded = jwt.verify(token, SECRET_KEY);
-      req.user = decoded;
+      // req.user = decoded;
       next();
     } catch (error) {
-      res.status(400).send("Invalid Token");
+      res.status(400).send('Invalid Token');
     }
   },
 };
