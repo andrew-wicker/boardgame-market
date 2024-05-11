@@ -16,16 +16,52 @@ interface DataController {
 
 const dataController: DataController = {
   addGameToGamesTable: async function (req, res, next) {
-    if (!req.user)
+    if (!req.body.user)
       return res.status(401).send('Access Denied / Unauthorized request');
-    const { gameId } = req.body;
-    const userId = req.user.id;
-    console.log(gameId);
-    next();
+    const {
+      type,
+      id,
+      thumbnail,
+      image,
+      name,
+      description,
+      yearPublished,
+      minPlayers,
+      maxPlayers,
+      playingTime,
+      minPlayTime,
+      maxPlayTime,
+      minimumAge,
+    } = req.body.game;
+    const userId = req.body.user.id;
+    try {
+      const query = `INSERT INTO games (type, id, thumbnail, image, name, description, yearPublished, minPlayers, maxPlayers, playingTime, minPlayTime, maxPlayTime, minimumAge) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`;
+      const result = await pool.query(query, [
+        type,
+        id,
+        thumbnail,
+        image,
+        name,
+        description,
+        yearPublished,
+        minPlayers,
+        maxPlayers,
+        playingTime,
+        minPlayTime,
+        maxPlayTime,
+        minimumAge,
+      ]);
+      console.log('result: ', result);
+      return res.json({ success: true, game: result.rows[0] });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ success: false, message: 'Server error: ', error });
+    }
   },
   addGameToCollection: async function (req, res, next) {
     const { gameId } = req.body;
-    console.log(gameId);
+    console.log('game id in addGameToCollection: ', gameId);
   },
 };
 

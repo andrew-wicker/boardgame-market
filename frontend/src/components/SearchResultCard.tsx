@@ -49,7 +49,7 @@ export default function SearchResultCard({
           },
           body: JSON.stringify({
             userId: user.userId,
-            gameId: gameDetails.id,
+            game: gameDetails,
           }),
         },
       );

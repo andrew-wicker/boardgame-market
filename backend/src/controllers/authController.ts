@@ -37,12 +37,14 @@ const authController: AuthController = {
             SECRET_KEY,
             { expiresIn: '7d' }
           );
-          res.json({ success: true, token });
+          console.log('token in authController: ', token);
+
+          res.json({ success: true, token, userId: user.user_id });
         } else {
           res.status(401).json({ success: false, message: 'Invalid password' });
         }
       } else {
-        res.status(404).json({ success: false, message: 'User not fount' });
+        res.status(404).json({ success: false, message: 'User not found' });
       }
     } catch (error) {
       res
@@ -70,7 +72,9 @@ const authController: AuthController = {
   verifyToken: function (req, res, next) {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(token);
+    const { userId } = req.body;
+    const { gameId } = req.body;
+    console.log('token: ', token);
 
     if (!token) {
       return res.status(401).send('Access Denied / Unauthorized request');
@@ -79,7 +83,7 @@ const authController: AuthController = {
     try {
       const decoded = jwt.verify(token, SECRET_KEY);
       if (typeof decoded === 'object' && 'user_id' in decoded) {
-        req.user = {
+        req.body.user = {
           id: decoded.user_id,
           username: decoded.username,
         };

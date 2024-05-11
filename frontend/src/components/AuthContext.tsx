@@ -2,6 +2,7 @@ import { createContext, useState, useContext, ReactNode } from 'react';
 import Cookies from 'js-cookie';
 
 interface User {
+  token: string;
   userId: string;
   username?: string | null;
   email?: string | null;
@@ -10,7 +11,7 @@ interface User {
 interface AuthContextType {
   isAuthed: boolean;
   user: User | null;
-  login: (token: string, userId: string) => void;
+  login: (user: User) => void;
   logout: () => void;
 }
 
@@ -31,15 +32,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthed, setIsAuthed] = useState(!!Cookies.get('token'));
   const [user, setUser] = useState<User | null>(null);
 
-  const login = (token: string, userId: string) => {
-    Cookies.set('token', token, { expires: 7 });
-    localStorage.setItem('userId', userId);
-    setUser({ userId });
+  // const login = (token: string, userId: string) => {
+  //   Cookies.set('token', token, { expires: 7 });
+  //   localStorage.setItem('userId', userId);
+
+  //   setUser(userId);
+  //   console.log('user in login function in AuthContext: ', user);
+  //   setIsAuthed(true);
+  // };
+
+  const login = (user: User) => {
+    Cookies.set('token', user.token, { expires: 7 });
+    localStorage.setItem('userId', user.userId);
+    localStorage.setItem('token', user.token);
+    setUser(user);
+    console.log('user in login function in AuthContext: ', user);
     setIsAuthed(true);
   };
 
   const logout = () => {
-    // localStorage.removeItem('token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     setUser(null);
     Cookies.remove('token');
     setIsAuthed(false);

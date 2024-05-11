@@ -28,10 +28,13 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
       body: JSON.stringify(userData),
     });
     const data = await response.json();
+    console.log('data in AuthForm: ', data);
     if (data.success) {
       console.log(`${isSignUp ? 'Signup' : 'Login'} successful!`);
       if (!isSignUp) {
-        login(data.token, '');
+        data.userId = data.userId.toString();
+        console.log('data in AuthForm conditional: ', data.userId);
+        login(data);
         closeModal();
       } else {
         setIsSignUp(false);
