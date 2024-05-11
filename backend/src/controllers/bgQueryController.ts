@@ -1,12 +1,12 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from 'express';
 import {
   parseSearchResults,
   GameObjects,
   GameObject,
   GameDetailObject,
-} from "../lib/xmlParsingHelpers";
+} from '../lib/xmlParsingHelpers';
 
-import { parser } from "../lib/bgXmlParser";
+import { parser } from '../lib/bgXmlParser';
 
 interface BoardGameQuery {
   gameSearch: (req: Request, res: Response, next: NextFunction) => void;
@@ -21,7 +21,7 @@ type NameArrayOrObject = NameObject[] | NameObject;
 
 const getFirstIndexOrDefault = (
   obj: NameArrayOrObject,
-  defaultValue: string = ""
+  defaultValue: string = ''
 ) => {
   if (Array.isArray(obj)) {
     return obj[0].value;
@@ -44,12 +44,12 @@ const bgQuery: BoardGameQuery = {
       parser.parseString(text, (err, result: { items: GameObjects }) => {
         if (err) {
           console.error(err);
-          res.status(500).send("Failed to parse XML");
+          res.status(500).send('Failed to parse XML');
           return;
         }
 
         if (!result.items || !result.items.item) {
-          res.status(404).send("No games found");
+          res.status(404).send('No games found');
           return;
         }
 
@@ -58,8 +58,8 @@ const bgQuery: BoardGameQuery = {
         next();
       });
     } catch (error) {
-      console.error("Error fetching data: ", error);
-      res.status(500).send("Error fetching data");
+      console.error('Error fetching data: ', error);
+      res.status(500).send('Error fetching data');
     }
   },
   gameDetailSearch: async function (req, res, next) {
@@ -73,7 +73,7 @@ const bgQuery: BoardGameQuery = {
       parser.parseString(text, (err, result) => {
         if (err) {
           console.error(err);
-          res.status(500).send("Failed to parse XML");
+          res.status(500).send('Failed to parse XML');
         } else if (result && result.items && result.items.item) {
           const gameDetails = {
             type: result.items.item.type,
@@ -93,12 +93,12 @@ const bgQuery: BoardGameQuery = {
           res.locals = { gameDetails };
           next();
         } else {
-          res.status(404).send("Game not found");
+          res.status(404).send('Game not found');
         }
       });
     } catch (error) {
-      console.error("Error fetching data: ", error);
-      res.status(500).send("Error fetching data");
+      console.error('Error fetching data: ', error);
+      res.status(500).send('Error fetching data');
     }
   },
 };

@@ -78,8 +78,15 @@ const authController: AuthController = {
 
     try {
       const decoded = jwt.verify(token, SECRET_KEY);
-      // req.user = decoded;
-      next();
+      if (typeof decoded === 'object' && 'user_id' in decoded) {
+        req.user = {
+          id: decoded.user_id,
+          username: decoded.username,
+        };
+        next();
+      } else {
+        throw new Error('Invalid token structure');
+      }
     } catch (error) {
       res.status(400).send('Invalid Token');
     }

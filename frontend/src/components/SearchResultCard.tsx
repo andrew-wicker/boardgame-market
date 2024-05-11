@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { SearchResult } from '../App';
-import { GameDetailObject } from '../../../backend/lib/xmlParsingHelpers';
+import { GameDetailObject } from '../../../backend/src/lib/xmlParsingHelpers';
 import { useAuth } from './AuthContext';
 import Cookies from 'js-cookie';
 
