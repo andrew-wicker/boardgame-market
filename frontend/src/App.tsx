@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import Search from './components/Search';
 import TopBar from './components/TopBar';
 import SearchResultCard from './components/SearchResultCard';
+import { AuthProvider } from './components/AuthContext';
 
 export interface SearchResult {
   id: string;
@@ -36,21 +37,23 @@ function App() {
 
   return (
     <div className="flex flex-col justify-between">
-      <TopBar />
-      <Hero />
-      <Search
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        handleSearch={handleSearch}
-      />
-      <div className="mx-auto mt-16 flex w-full flex-wrap items-center justify-center">
-        {searchResults.map((item, index) => (
-          <SearchResultCard
-            key={index}
-            searchResult={item}
-          />
-        ))}
-      </div>
+      <AuthProvider>
+        <TopBar />
+        <Hero />
+        <Search
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          handleSearch={handleSearch}
+        />
+        <div className="mx-auto mt-16 flex w-full flex-wrap items-center justify-center">
+          {searchResults.map((item, index) => (
+            <SearchResultCard
+              key={index}
+              searchResult={item}
+            />
+          ))}
+        </div>
+      </AuthProvider>
     </div>
   );
 }

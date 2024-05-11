@@ -1,6 +1,5 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 import bgQuery from "../controllers/bgQueryController";
-import xml2js from "xml2js";
 const router = express.Router();
 
 router.get("/bgquery/:id", bgQuery.gameDetailSearch, (req, res, next) => {
