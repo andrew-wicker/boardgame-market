@@ -12,18 +12,18 @@ export interface GameObject {
 
 export interface GameDetailObject {
   type: string;
-  id: string;
-  thumbnail: string;
-  image: string;
-  name: string;
+  bgg_id: string;
+  thumbnail_url: string;
+  image_url: string;
+  title: string;
   description: string;
-  yearPublished: string;
-  minPlayers: string;
-  maxPlayers: string;
-  playingTime: string;
-  minPlayTime: string;
-  maxPlayTime: string;
-  minimumAge: string;
+  year_published: string;
+  min_players: string;
+  max_players: string;
+  playing_time: string;
+  min_play_time: string;
+  max_play_time: string;
+  min_age: string;
 }
 
 export interface GameObjects {

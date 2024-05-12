@@ -1,5 +1,5 @@
 import { useState } from 'react';
-// import { useAuth } from '../lib/utils';
+
 import { useAuth } from './AuthContext';
 interface AuthFormProps {
   closeModal: () => void;
@@ -28,10 +28,13 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
       body: JSON.stringify(userData),
     });
     const data = await response.json();
+    console.log('data in AuthForm: ', data);
     if (data.success) {
       console.log(`${isSignUp ? 'Signup' : 'Login'} successful!`);
       if (!isSignUp) {
-        login(data.token);
+        data.userId = data.userId.toString();
+        console.log('data in AuthForm conditional: ', data.userId);
+        login(data);
         closeModal();
       } else {
         setIsSignUp(false);
@@ -68,6 +71,7 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
               placeholder="E-Mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              tabIndex={1}
             ></input>
           </>
         )}
@@ -83,6 +87,7 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          tabIndex={2}
         ></input>
         <label
           htmlFor="password"
@@ -96,6 +101,7 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          tabIndex={3}
         ></input>
         <button
           className="mb-4 rounded bg-emerald-700 px-4 py-1 font-bold text-night-100 hover:border-emerald-200 hover:bg-emerald-400 hover:text-emerald-100"
