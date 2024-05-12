@@ -12,7 +12,6 @@ export default function SearchResultCard({
   searchResult,
 }: SearchResultCardProps) {
   const [gameDetails, setGameDetails] = useState<GameDetailObject | null>(null);
-  const [isAdded, setIsAdded] = useState(false);
   const { user, isAuthed } = useAuth();
 
   useEffect(() => {
