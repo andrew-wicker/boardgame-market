@@ -13,6 +13,11 @@ interface DataController {
     res: Response,
     next: NextFunction
   ) => void;
+  getGamesFromCollection: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => void;
 }
 
 const createErr = (errInfo: ErrInfo) => {
@@ -46,8 +51,6 @@ const dataController: DataController = {
       max_play_time,
       min_age,
     } = req.body.game;
-    console.log('req.body.game: ', req.body.game);
-    console.log('bgg_id', bgg_id);
     const userId = req.body.user.id;
     try {
       const query = `INSERT INTO games (type, bgg_id, thumbnail_url, image_url, title, description, year_published, min_players, max_players, playing_time, min_play_time, max_play_time, min_age) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)   ON CONFLICT (bgg_id)
@@ -111,6 +114,35 @@ const dataController: DataController = {
           method: 'addGameToCollection in dataController',
           type: 'PostgreSQL Storage Error',
           err: 'Storing data in collections table failed',
+        })
+      );
+    }
+  },
+  getGamesFromCollection: async function (req, res, next) {
+    const user_id = req.body.userId;
+
+    const collectionQuery = `
+    SELECT g.*
+    FROM collections c
+    JOIN games g ON g.game_id = c.game_id
+    WHERE c.user_id = $1;
+    `;
+
+    try {
+      const result = await pool.query(collectionQuery, [user_id]);
+
+      console.log('result is: ', result.rows);
+      res.locals.collection = result.rows;
+      return next();
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Error retrieving game collection: ', error.message);
+      res.status(500).send('Error retrieving game collection');
+      return next(
+        createErr({
+          method: 'getGamesFromCollection in dataController middleware',
+          type: 'PostgreSQL Retrieval Error',
+          err: 'Fetching game details from the collection failed',
         })
       );
     }
