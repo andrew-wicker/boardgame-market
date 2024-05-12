@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import pool from './postGresController';
+import { ErrInfo } from '../@types';
 
 interface DataController {
   addGameToGamesTable: (
@@ -13,6 +14,18 @@ interface DataController {
     next: NextFunction
   ) => void;
 }
+
+const createErr = (errInfo: ErrInfo) => {
+  const { method, type, err } = errInfo;
+  return {
+    log: `dataController.${method} ${type}: ERROR: ${
+      typeof err === 'object' ? JSON.stringify(err) : err
+    }`,
+    message: {
+      err: `Error occured in dataController.${method}. Check server logs for more details.`,
+    },
+  };
+};
 
 const dataController: DataController = {
   addGameToGamesTable: async function (req, res, next) {
@@ -66,29 +79,40 @@ const dataController: DataController = {
         max_play_time,
         min_age,
       ]);
-      console.log('result: ', result);
-      // res.json({ success: true, game: result.rows[0] });
       res.locals.result = result.rows[0];
       res.locals.gamePrimaryKey = result.rows[0].game_id;
-      next();
-    } catch (error) {
-      res
-        .status(500)
-        .json({ success: false, message: 'Server error: ', error });
+      return next();
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Error storing data: ', error.message);
+      res.status(500).send('Error storing data');
+      return next(
+        createErr({
+          method: 'addGameToGamesTable in dataController',
+          type: 'PostgreSQL Storage Error',
+          err: 'Storing data in games table failed',
+        })
+      );
     }
   },
   addGameToCollection: async function (req, res, next) {
     const game_id = res.locals.gamePrimaryKey;
-    console.log('game_id', game_id);
     const user_id = req.body.user.id;
-    console.log('addGameToCollection, req.body.user: ', req.body.user);
     const query = `INSERT INTO collections (user_id, game_id) VALUES ($1, $2) RETURNING *`;
     try {
       const result = await pool.query(query, [user_id, game_id]);
-      console.log('Added to collection: ', result.rows[0]);
       next();
-    } catch (error) {
-      console.error('Error adding game to collection table: ', error);
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Error storing data: ', error.message);
+      res.status(500).send('Error storing data');
+      return next(
+        createErr({
+          method: 'addGameToCollection in dataController',
+          type: 'PostgreSQL Storage Error',
+          err: 'Storing data in collections table failed',
+        })
+      );
     }
   },
 };

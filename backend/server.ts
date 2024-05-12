@@ -15,8 +15,15 @@ app.use(cors());
 
 app.use(express.json());
 
+const frontendPath = path.join(__dirname, '..', 'frontend');
+
+app.use(express.static(path.join(frontendPath, '/dist')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
 app.use('/bg', bggApiRouter, (req, res) => {
-  // console.log(res.locals.games);
   return res.status(200).json(res.locals.games);
 });
 
@@ -24,14 +31,24 @@ app.use('/auth', authRouter);
 
 app.use('/data', dataRouter);
 
-const frontendPath = path.join(__dirname, '..', 'frontend');
-
-app.use(express.static(path.join(frontendPath, '/dist')));
-
 app.get('*', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
+  res.status(404).send('Page not found');
+});
+
+app.use((err, req, res, next) => {
+  const defaultErr = {
+    log: 'Express error handler caught unknown middleware error',
+    status: 500,
+    message: { err: 'An error occured' },
+  };
+
+  const errorObj = Object.assign(defaultErr, err);
+  console.log(errorObj);
+  res.status(errorObj.status).json({ error: errorObj.message });
 });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+export default app;

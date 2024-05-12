@@ -2,6 +2,19 @@ import express, { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import pool from './postGresController';
 import jwt from 'jsonwebtoken';
+import { ErrInfo } from '../@types';
+
+const createErr = (errInfo: ErrInfo) => {
+  const { method, type, err } = errInfo;
+  return {
+    log: `authController.${method} ${type}: ERROR: ${
+      typeof err === 'object' ? JSON.stringify(err) : err
+    }`,
+    message: {
+      err: `Error occured in authController.${method}. Check server logs for more details.`,
+    },
+  };
+};
 
 const SECRET_KEY =
   process.env.SECRET_KEY ||
@@ -46,10 +59,17 @@ const authController: AuthController = {
       } else {
         res.status(404).json({ success: false, message: 'User not found' });
       }
-    } catch (error) {
-      res
-        .status(500)
-        .json({ success: false, message: 'Server error: ', error });
+    } catch (err) {
+      res.status(500).json({ success: false, message: 'Server error: ', err });
+      const error = err as Error;
+
+      return next(
+        createErr({
+          method: 'create in authController',
+          type: 'Account creation',
+          err: 'Adding account to users table failed',
+        })
+      );
     }
   },
   create: async function (req, res, next) {
@@ -63,10 +83,16 @@ const authController: AuthController = {
       const result = await pool.query(query, [username, passwordHash, email]);
       console.log('result: ', result);
       res.json({ success: true, user: result.rows[0] });
-    } catch (error) {
-      res
-        .status(500)
-        .json({ success: false, message: 'Server error: ', error });
+    } catch (err: unknown) {
+      res.status(500).json({ success: false, message: 'Server error: ', err });
+      const error = err as Error;
+      return next(
+        createErr({
+          method: 'create in authController',
+          type: 'Account creation',
+          err: 'Adding account to users table failed',
+        })
+      );
     }
   },
   verifyToken: function (req, res, next) {
@@ -91,8 +117,16 @@ const authController: AuthController = {
       } else {
         throw new Error('Invalid token structure');
       }
-    } catch (error) {
+    } catch (err: unknown) {
       res.status(400).send('Invalid Token');
+      const error = err as Error;
+      return next(
+        createErr({
+          method: 'verifyToken in authController',
+          type: 'Token Verification',
+          err: 'Unable to verify token',
+        })
+      );
     }
   },
 };
