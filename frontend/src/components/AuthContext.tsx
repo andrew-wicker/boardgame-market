@@ -32,15 +32,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthed, setIsAuthed] = useState(!!Cookies.get('token'));
   const [user, setUser] = useState<User | null>(null);
 
-  // const login = (token: string, userId: string) => {
-  //   Cookies.set('token', token, { expires: 7 });
-  //   localStorage.setItem('userId', userId);
-
-  //   setUser(userId);
-  //   console.log('user in login function in AuthContext: ', user);
-  //   setIsAuthed(true);
-  // };
-
   const login = (user: User) => {
     Cookies.set('token', user.token, { expires: 7 });
     localStorage.setItem('userId', user.userId);

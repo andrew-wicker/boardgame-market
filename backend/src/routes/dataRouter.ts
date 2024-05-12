@@ -5,7 +5,7 @@ import authController from '../controllers/authController';
 const router = express.Router();
 
 router.post(
-  '/collection/add',
+  '/collection',
   authController.verifyToken,
   dataController.addGameToGamesTable,
   dataController.addGameToCollection,
@@ -15,7 +15,8 @@ router.post(
 );
 
 router.get(
-  '/collection/view',
+  '/view/:id',
+  authController.verifyToken,
   dataController.getGamesFromCollection,
   (req, res) => {
     return res.status(200).json(res.locals.collection);

@@ -119,7 +119,7 @@ const dataController: DataController = {
     }
   },
   getGamesFromCollection: async function (req, res, next) {
-    const user_id = req.body.userId;
+    const user_id = req.params.id;
 
     const collectionQuery = `
     SELECT g.*
@@ -129,10 +129,10 @@ const dataController: DataController = {
     `;
 
     try {
-      const result = await pool.query(collectionQuery, [user_id]);
+      const games = await pool.query(collectionQuery, [user_id]);
 
-      console.log('result is: ', result.rows);
-      res.locals.collection = result.rows;
+      console.log('result is: ', games.rows);
+      res.locals.collection = games.rows;
       return next();
     } catch (err: unknown) {
       const error = err as Error;
