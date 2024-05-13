@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { useLocation } from 'react-router';
 import CollectionCard from './CollectionCard';
 
 export interface GameFromCollection {
@@ -22,15 +23,12 @@ export interface GameFromCollection {
   year_published: number;
 }
 
-interface CollectionProps {
-  view: string;
-}
-
-export default function Collection({ view }: CollectionProps) {
+export default function Collection() {
   const [gameCollection, setGameCollection] = useState<GameFromCollection[]>(
     [],
   );
   const { user } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     if (!user) {
@@ -62,7 +60,7 @@ export default function Collection({ view }: CollectionProps) {
     };
 
     fetchGameCollection();
-  }, [view, user]);
+  }, [user, location.pathname, gameCollection]);
 
   return (
     <>
