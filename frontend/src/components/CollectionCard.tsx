@@ -9,9 +9,7 @@ import Toast from './Toast';
 
 Modal.setAppElement('#root');
 
-interface CollectionCardProps extends GameFromCollection {
-  removeGame: (gameId: number) => void;
-}
+interface CollectionCardProps extends GameFromCollection {}
 
 export default function CollectionCard({
   game_id,
@@ -29,6 +27,8 @@ export default function CollectionCard({
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  const gameId = game_id;
+
   const displayToast = (message: string) => {
     setToastMessage(message);
     setShowToast(true);
@@ -45,7 +45,7 @@ export default function CollectionCard({
     .replace(/&amp;/g, '&')
     .replace(/&nbsp;/g, ' ');
 
-  const handleRemoveGame = async (game_id: string) => {
+  const handleRemoveGame = async (game_id: number) => {
     if (!user) {
       displayToast('You must be logged in to do that.');
       navigate('/main');
@@ -145,7 +145,7 @@ export default function CollectionCard({
               </div>
             </div>
             <div className="ml-4 text-lg font-bold">
-              <button onClick={() => handleRemoveGame}>
+              <button onClick={() => handleRemoveGame(gameId)}>
                 Remove Game from Collection
               </button>
             </div>

@@ -60,30 +60,6 @@ export default function Collection() {
     }
   };
 
-  const removeGame = async (game_id: number) => {
-    if (!user) return;
-    try {
-      console.log('game_id', game_id);
-      const response = await fetch(
-        `http://localhost:3000/data/collection/${game_id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
-          },
-        },
-      );
-      if (response.ok) {
-        setGameCollection(
-          gameCollection.filter((game) => game.game_id !== game_id),
-        );
-      }
-    } catch (error) {
-      console.error('Failed to remove game: ', error);
-    }
-  };
-
   return (
     <>
       <div className="flex flex-wrap gap-4">
@@ -92,7 +68,6 @@ export default function Collection() {
             <CollectionCard
               key={game.game_id}
               {...game}
-              removeGame={removeGame}
             />
           );
         })}
