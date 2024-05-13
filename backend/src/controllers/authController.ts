@@ -118,6 +118,7 @@ const authController: AuthController = {
           id: decoded.user_id,
           username: decoded.username,
         };
+        res.locals.userId = req.body.user.id;
         next();
       } else {
         throw new Error('Invalid token structure');

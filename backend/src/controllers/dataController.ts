@@ -18,6 +18,11 @@ interface DataController {
     res: Response,
     next: NextFunction
   ) => void;
+  removeGameFromCollection: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => void;
 }
 
 const createErr = (errInfo: ErrInfo) => {
@@ -131,7 +136,7 @@ const dataController: DataController = {
     try {
       const games = await pool.query(collectionQuery, [user_id]);
 
-      console.log('result is: ', games.rows);
+      // console.log('result is: ', games.rows);
       res.locals.collection = games.rows;
       return next();
     } catch (err: unknown) {
@@ -143,6 +148,35 @@ const dataController: DataController = {
           method: 'getGamesFromCollection in dataController middleware',
           type: 'PostgreSQL Retrieval Error',
           err: 'Fetching game details from the collection failed',
+        })
+      );
+    }
+  },
+  removeGameFromCollection: async function (req, res, next) {
+    // const game_id = res.locals.gamePrimaryKey;
+    const { game_id } = req.params;
+    const { userId } = res.locals;
+    const query = `DELETE FROM collections WHERE user_id = $1 AND game_id = $2`;
+    try {
+      const result = await pool.query(query, [userId, game_id]);
+      if (result.rowCount && result.rowCount > 0) {
+        res
+          .status(200)
+          .json({ success: true, message: 'Game removed from collection.' });
+      } else {
+        res
+          .status(404)
+          .json({ success: false, message: 'Game not found in collection.' });
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Error deleting data: ', error.message);
+      res.status(500).send('Error deleting data');
+      return next(
+        createErr({
+          method: 'removeGameFromCollection in dataController',
+          type: 'PostgreSQL Deletion Error',
+          err: 'Deleting row in collections table failed',
         })
       );
     }
