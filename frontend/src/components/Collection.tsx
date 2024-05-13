@@ -53,35 +53,16 @@ export default function Collection() {
         },
       );
       const data = await response.json();
-      console.log('data in fetchGameUseEffect: ', data);
       setGameCollection(data);
     } catch (error) {
       console.error('Failed to fetch game details: ', error);
     }
   };
 
-  const removeGame = async (game_id: number) => {
-    if (!user) return;
-    try {
-      console.log('game_id', game_id);
-      const response = await fetch(
-        `http://localhost:3000/data/collection/${game_id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
-          },
-        },
-      );
-      if (response.ok) {
-        setGameCollection(
-          gameCollection.filter((game) => game.game_id !== game_id),
-        );
-      }
-    } catch (error) {
-      console.error('Failed to remove game: ', error);
-    }
+  const handleRemoveGame = (gameId: number) => {
+    setGameCollection((current) =>
+      current.filter((game) => game.game_id !== gameId),
+    );
   };
 
   return (
@@ -92,7 +73,7 @@ export default function Collection() {
             <CollectionCard
               key={game.game_id}
               {...game}
-              removeGame={removeGame}
+              removeGame={handleRemoveGame}
             />
           );
         })}
