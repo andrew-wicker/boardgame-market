@@ -38,20 +38,17 @@ export default function SearchResultCard({
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/data/collection/add`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${Cookies.get('token')}`,
-          },
-          body: JSON.stringify({
-            userId: user.userId,
-            game: gameDetails,
-          }),
+      const response = await fetch(`http://localhost:3000/data/collection`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Cookies.get('token')}`,
         },
-      );
+        body: JSON.stringify({
+          userId: user.userId,
+          game: gameDetails,
+        }),
+      });
 
       if (!response.ok) throw new Error('Failed to add to collection');
 

@@ -1,12 +1,14 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import bggApiRouter from './src/routes/bggApiRouter';
 import authRouter from './src/routes/authRouter';
 import dataRouter from './src/routes/dataRouter';
 import cors from 'cors';
+
+import { ErrInfo } from './src/@types';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,7 +37,7 @@ app.get('*', (req, res) => {
   res.status(404).send('Page not found');
 });
 
-app.use((err, req, res, next) => {
+app.use((err: ErrInfo, req: Request, res: Response, next: NextFunction) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 500,

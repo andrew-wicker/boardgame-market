@@ -6,7 +6,14 @@ import { useAuth } from './AuthContext';
 
 Modal.setAppElement('#root');
 
-export default function TopBar() {
+type ViewType = 'search' | 'collection';
+
+interface TopBarProps {
+  setView: (value: ViewType) => void;
+  displayToast: (message: string) => void;
+}
+
+export default function TopBar({ setView, displayToast }: TopBarProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const { isAuthed, logout } = useAuth();
 
@@ -18,17 +25,42 @@ export default function TopBar() {
     }
   };
 
+  const handleCollectionClick = () => {
+    if (isAuthed) setView('collection');
+    else {
+      displayToast('Please log in view your collection.');
+    }
+  };
+
+  const handleKlaxClick = () => {
+    setView('search');
+  };
+
   return (
     <>
-      <nav className="fixed left-0 top-0 flex min-h-20 w-screen items-center justify-between bg-white p-4 font-sans">
+      <nav className="fixed left-0 top-0 my-8 flex max-h-16 w-screen items-center justify-between bg-white p-6 font-sans">
         <div className="flex items-center">
           <img
             src="/images/logo.png"
             className="h-auto w-20"
           />
-          <div className="mt-2 text-4xl font-bold">K-LAX</div>
+          <div
+            className="mt-2 text-4xl font-bold"
+            onClick={handleKlaxClick}
+          >
+            <button>K-LAX</button>
+          </div>
         </div>
-        <div className="mx-4 flex flex-col items-center justify-center">
+
+        <div className="mx-4 mt-4 flex items-center justify-center">
+          <div>
+            <button
+              onClick={handleCollectionClick}
+              className="mr-8 text-xl hover:text-emerald-400"
+            >
+              My Collection
+            </button>
+          </div>
           <button
             className="flex flex-col items-center justify-center text-center text-emerald-700 hover:text-emerald-200"
             onClick={handleAuthClick}
