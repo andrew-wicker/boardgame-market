@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { useAuth } from './AuthProvider';
 import Cookies from 'js-cookie';
 import { GameFromCollection } from './Collection';
-import { Clock3, Users, Baby } from 'lucide-react';
+import { Clock3, Users, Baby, FolderMinus } from 'lucide-react';
 import Toast from './Toast';
 
 Modal.setAppElement('#root');
@@ -127,13 +127,13 @@ export default function CollectionCard({
         >
           X
         </button>
-        <div className="grid grid-flow-col grid-cols-3 gap-4">
-          <div className="col-span-1 flex flex-col justify-between">
+        <div className="relative grid max-h-[55vh] min-h-[55vh] grid-flow-col grid-cols-3  gap-4">
+          <div className="relative col-span-1 flex flex-col justify-start">
             <img
               src={image_url}
-              className="mb-4 rounded-md border-2 border-night-800 shadow-lg"
+              className="mb-8 rounded-md border-2 border-night-800 shadow-lg"
             />
-            <div className="ml-4 flex flex-col justify-evenly gap-2 text-xl font-bold">
+            <div className="ml-4 flex flex-col justify-between gap-2 text-xl font-bold">
               <div className="flex items-center gap-2">
                 <Users />
                 <p>
@@ -148,14 +148,18 @@ export default function CollectionCard({
                 <Baby />
                 <p className="font-bold">Age: {min_age}+</p>
               </div>
-            </div>
-            <div className="ml-4 text-lg font-bold">
-              <button onClick={() => handleRemoveGame(gameId)}>
-                Remove Game from Collection
-              </button>
+              <div className=" mt-8 ">
+                <button
+                  onClick={() => handleRemoveGame(gameId)}
+                  className="flex items-center gap-2 text-lg font-bold hover:text-red-600"
+                >
+                  <FolderMinus />
+                  <p>Remove Game</p>
+                </button>
+              </div>
             </div>
           </div>
-          <p className="col-span-2 max-h-[65vh] overflow-auto whitespace-pre-wrap text-wrap break-normal px-4 font-serif text-lg">
+          <p className="col-span-2 max-h-[55vh] overflow-auto whitespace-pre-wrap text-wrap break-normal px-4 font-serif text-lg">
             {formattedDescription}
           </p>
         </div>
