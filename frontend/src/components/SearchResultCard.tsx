@@ -61,9 +61,13 @@ export default function SearchResultCard({
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to add to collection');
-
-      displayToast('Game added to collection!');
+      if (response.ok) {
+        // const data = await response.json();
+        displayToast('Game added to collection!');
+      } else {
+        const errorData = await response.json();
+        displayToast(errorData.message || 'Failed to add to collection');
+      }
     } catch (error) {
       console.error('Failed to add game to collection: ', error);
       displayToast('Failed to add game to collection');

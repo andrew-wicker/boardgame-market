@@ -21,27 +21,29 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
       ? { username, password, email }
       : { username, password };
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-    const data = await response.json();
-    console.log('data in AuthForm: ', data);
-    if (data.success) {
-      console.log(`${isSignUp ? 'Signup' : 'Login'} successful!`);
-      if (!isSignUp) {
-        data.userId = data.userId.toString();
-        console.log('data in AuthForm conditional: ', data.userId);
-        login(data);
-        closeModal();
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      const data = await response.json();
+      if (data.success) {
+        console.log(`${isSignUp ? 'Signup' : 'Login'} successful!`);
+        if (!isSignUp) {
+          // data.userId = data.userId.toString();
+          login(data);
+          closeModal();
+        } else {
+          setIsSignUp(false);
+        }
       } else {
-        setIsSignUp(false);
+        console.error(`${isSignUp ? 'Signup' : 'Login'} failed!`);
       }
-    } else {
-      console.error(`${isSignUp ? 'Signup' : 'Login'} failed!`);
+    } catch (error) {
+      console.error('Error submitting form: ', error);
     }
   };
 

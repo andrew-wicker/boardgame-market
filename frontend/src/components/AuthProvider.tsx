@@ -5,6 +5,7 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
+import Cookies from 'js-cookie';
 
 interface AuthedUser {
   success: boolean;
@@ -29,6 +30,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const login = (newUser: AuthedUser) => {
     localStorage.setItem('authUser', JSON.stringify(newUser));
+    Cookies.set('token', newUser.token);
     setUser(newUser);
   };
 

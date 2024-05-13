@@ -50,7 +50,13 @@ const authController: AuthController = {
             SECRET_KEY,
             { expiresIn: '7d' }
           );
-          console.log('token in authController: ', token);
+
+          res.cookie('token', token, {
+            httpOnly: false,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 604800000, // 7 Days
+          });
 
           res.json({ success: true, token, userId: user.user_id });
         } else {
@@ -100,7 +106,6 @@ const authController: AuthController = {
     const token = authHeader && authHeader.split(' ')[1];
     const { userId } = req.body;
     const { gameId } = req.body;
-    console.log('token: ', token);
 
     if (!token) {
       return res.status(401).send('Access Denied / Unauthorized request');
