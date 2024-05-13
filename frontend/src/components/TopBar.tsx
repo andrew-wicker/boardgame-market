@@ -38,7 +38,7 @@ export default function TopBar({ setView, displayToast }: TopBarProps) {
 
   return (
     <>
-      <nav className="fixed left-0 top-0 flex min-h-20 w-screen items-center justify-between bg-white p-4 font-sans">
+      <nav className="fixed left-0 top-0 my-8 flex max-h-16 w-screen items-center justify-between bg-white p-6 font-sans">
         <div className="flex items-center">
           <img
             src="/images/logo.png"

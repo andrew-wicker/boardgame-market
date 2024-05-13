@@ -22,7 +22,11 @@ export interface GameFromCollection {
   year_published: number;
 }
 
-export default function Collection() {
+interface CollectionProps {
+  view: string;
+}
+
+export default function Collection({ view }: CollectionProps) {
   const [gameCollection, setGameCollection] = useState<GameFromCollection[]>(
     [],
   );
@@ -58,7 +62,7 @@ export default function Collection() {
     };
 
     fetchGameCollection();
-  }, [user]);
+  }, [view, user]);
 
   return (
     <>

@@ -38,7 +38,7 @@ export default function SearchResultCard({
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/data/add`, {
+      const response = await fetch(`http://localhost:3000/data/collection`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

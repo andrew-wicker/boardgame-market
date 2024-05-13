@@ -64,26 +64,28 @@ function App() {
           setView={setView}
           displayToast={displayToast}
         />
-        {view === 'search' ? (
-          <>
-            <Hero />
-            <Search
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              handleSearch={handleSearch}
-            />
-            <div className="mx-auto mt-16 flex w-full flex-wrap items-center justify-center">
-              {searchResults.map((item, index) => (
-                <SearchResultCard
-                  key={index}
-                  searchResult={item}
-                />
-              ))}
-            </div>
-          </>
-        ) : (
-          <Collection />
-        )}
+        <div className="mt-20">
+          {view === 'search' ? (
+            <>
+              <Hero />
+              <Search
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                handleSearch={handleSearch}
+              />
+              <div className="mx-auto mt-16 flex w-full flex-wrap items-center justify-center">
+                {searchResults.map((item, index) => (
+                  <SearchResultCard
+                    key={index}
+                    searchResult={item}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            <Collection view={view} />
+          )}
+        </div>
       </AuthProvider>
     </div>
   );
