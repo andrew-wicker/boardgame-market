@@ -43,7 +43,7 @@ export default function TopBar({ displayToast }: TopBarProps) {
           />
           <div
             className="mt-2 text-4xl font-bold"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/main')}
           >
             <button>K-LAX</button>
           </div>
@@ -52,7 +52,7 @@ export default function TopBar({ displayToast }: TopBarProps) {
         <div className="mx-4 mt-4 flex items-center justify-center">
           <div>
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/search')}
               className="mr-8 text-xl hover:text-emerald-400"
             >
               Search

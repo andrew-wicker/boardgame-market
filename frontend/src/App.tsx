@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Hero from './components/Hero';
 import Search from './components/Search';
 import TopBar from './components/TopBar';
@@ -12,6 +12,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const location = useLocation();
 
   const displayToast = (message: string) => {
     setToastMessage(message);
@@ -20,6 +21,10 @@ export default function App() {
       setShowToast(false);
     }, 3000);
   };
+
+  useEffect(() => {
+    setSearchTerm('');
+  }, [location.pathname]);
 
   return (
     <div>
@@ -38,7 +43,19 @@ export default function App() {
       <div className="container">
         <Routes>
           <Route
-            path="/"
+            path="/main"
+            element={
+              <>
+                <Hero />
+                <Search
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                />
+              </>
+            }
+          />
+          <Route
+            path="/search"
             element={
               <>
                 <Hero />
