@@ -26,6 +26,11 @@ interface AuthController {
   login: (req: Request, res: Response, next: NextFunction) => void;
   create: (req: Request, res: Response, next: NextFunction) => void;
   verifyToken: (req: Request, res: Response, next: NextFunction) => void;
+  requestPasswordReset: (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => void;
 }
 
 const authController: AuthController = {
@@ -101,7 +106,7 @@ const authController: AuthController = {
       );
     }
   },
-  verifyToken: function (req, res, next) {
+  verifyToken: async function (req, res, next) {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
     const { userId } = req.body;
@@ -131,6 +136,40 @@ const authController: AuthController = {
           method: 'verifyToken in authController',
           type: 'Token Verification',
           err: 'Unable to verify token',
+        })
+      );
+    }
+  },
+  requestPasswordReset: async function (req, res, next) {
+    const { email } = req.body;
+    try {
+      const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [
+        email,
+      ]);
+      if (user.rows.length === 0) {
+        res.status(404).json({ success: false, message: 'User not found' });
+        next();
+      } else {
+        const resetToken = crypto.randomBytes(20).toString('hex');
+        const expireTime = Date.now() + 3600000;
+
+        await pool.query(
+          `UPDATE users SET reset_token = $1, reset_token_expires = $2 WHERE email = $3`,
+          [resetToken, expireTime, email]
+        );
+
+        sendResetEmail(email, resetToken);
+
+        res.json({ success: true, message: 'Password reset email sent.' });
+      }
+    } catch (err) {
+      res.status(500).json({ success: false, message: 'Server error: ', err });
+      const error = err as Error;
+      return next(
+        createErr({
+          method: 'requestPasswordReset in authController',
+          type: 'Password reset',
+          err: 'Reset password failed',
         })
       );
     }
