@@ -86,7 +86,7 @@ export default function Collection() {
 
   return (
     <>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-4">
         {gameCollection.map((game) => {
           return (
             <CollectionCard

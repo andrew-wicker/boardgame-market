@@ -10,7 +10,6 @@ interface CollectionCardProps extends GameFromCollection {
 }
 
 export default function CollectionCard({
-  game_id,
   description,
   image_url,
   max_players,
@@ -18,7 +17,6 @@ export default function CollectionCard({
   min_players,
   playing_time,
   title,
-  removeGame,
 }: CollectionCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -30,23 +28,18 @@ export default function CollectionCard({
     .replace(/&amp;/g, '&');
 
   return (
-    <div className="mx-8 mb-8 flex h-80 w-72 flex-col items-center justify-center rounded-xl border border-b-night-800 border-l-night-800 shadow-lg">
-      <div className=" flex max-w-48 items-center justify-center p-4">
+    <>
+      <div className="flex max-w-56 flex-col justify-between overflow-hidden rounded shadow-lg">
         <img
+          className="aspect-square w-full object-cover object-top"
           src={image_url}
-          className="max-h-full max-w-full rounded-2xl shadow-lg"
+          alt={title}
           onClick={() => setModalOpen(!modalOpen)}
         />
-      </div>
-      <div className="mt-px flex h-24 flex-col justify-around rounded-b-xl border-night-700 px-2">
-        <h3 className="text-pretty text-xl font-bold">{title}</h3>
-
-        <button
-          onClick={() => removeGame(game_id)}
-          className="rounded bg-emerald-700 px-4 py-2 font-bold hover:border-emerald-200 hover:bg-emerald-400 hover:text-emerald-100"
-        >
-          Remove Game
-        </button>
+        <div className="px-6 py-4">
+          <div className="mb-2 text-pretty text-xl font-bold">{title}</div>
+          <p className="text-base text-night-700"></p>
+        </div>
       </div>
       <Modal
         isOpen={modalOpen}
@@ -101,6 +94,6 @@ export default function CollectionCard({
           </div>
         </div>
       </Modal>
-    </div>
+    </>
   );
 }

@@ -49,7 +49,7 @@ export default function App() {
   };
 
   return (
-    <>
+    <div>
       {showToast && (
         <Toast
           message={toastMessage}
@@ -86,6 +86,6 @@ export default function App() {
           />
         </Routes>
       </div>
-    </>
+    </div>
   );
 }
