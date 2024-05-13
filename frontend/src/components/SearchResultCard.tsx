@@ -13,7 +13,6 @@ export default function SearchResultCard({
   searchResult,
 }: SearchResultCardProps) {
   const [gameDetails, setGameDetails] = useState<GameDetailObject | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const { user } = useAuth();
@@ -87,11 +86,7 @@ export default function SearchResultCard({
         />
       )}
       <div className="flex h-4/5 flex-col items-center justify-center rounded-xl px-2">
-        <div
-          className="relative min-h-48 w-48"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+        <div className="relative min-h-48 w-48">
           <button
             className="group flex h-full w-full items-center justify-center transition-all ease-in-out"
             onClick={handleAddToCollection}
