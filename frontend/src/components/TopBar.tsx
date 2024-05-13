@@ -35,7 +35,7 @@ export default function TopBar({ displayToast }: TopBarProps) {
 
   return (
     <>
-      <nav className="fixed left-0 top-0 my-8 flex max-h-24 w-full items-center justify-between bg-white p-6 font-sans">
+      <nav className="left-0 top-0 z-50 mb-2 flex max-h-24 w-full items-center justify-between bg-white p-2 font-sans">
         <div className="flex items-center">
           <img
             src="/images/logo.png"
@@ -50,6 +50,14 @@ export default function TopBar({ displayToast }: TopBarProps) {
         </div>
 
         <div className="mx-4 mt-4 flex items-center justify-center">
+          <div>
+            <button
+              onClick={() => navigate('/')}
+              className="mr-8 text-xl hover:text-emerald-400"
+            >
+              Search
+            </button>
+          </div>
           <div>
             <button
               onClick={handleCollectionClick}
@@ -84,7 +92,10 @@ export default function TopBar({ displayToast }: TopBarProps) {
               },
             }}
           >
-            <AuthForm closeModal={() => setModalOpen(false)} />
+            <AuthForm
+              closeModal={() => setModalOpen(false)}
+              displayToast={displayToast}
+            />
           </Modal>
         </div>
       </nav>

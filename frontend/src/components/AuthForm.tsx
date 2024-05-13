@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { useAuth } from './AuthProvider';
 interface AuthFormProps {
   closeModal: () => void;
+  displayToast: (message: string) => void;
 }
 
-export default function AuthForm({ closeModal }: AuthFormProps) {
+export default function AuthForm({ closeModal, displayToast }: AuthFormProps) {
   const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -32,6 +33,7 @@ export default function AuthForm({ closeModal }: AuthFormProps) {
       const data = await response.json();
       if (data.success) {
         console.log(`${isSignUp ? 'Signup' : 'Login'} successful!`);
+        displayToast('You are now logged in to K-LAX');
         if (!isSignUp) {
           // data.userId = data.userId.toString();
           login(data);

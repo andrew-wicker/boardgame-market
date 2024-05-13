@@ -1,14 +1,17 @@
+import { useNavigate } from 'react-router';
+
 interface SearchProps {
   searchTerm: string;
   setSearchTerm: (value: string) => void;
-  handleSearch: () => void;
 }
 
-export default function Search({
-  searchTerm,
-  setSearchTerm,
-  handleSearch,
-}: SearchProps) {
+export default function Search({ searchTerm, setSearchTerm }: SearchProps) {
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    navigate('/searchResults');
+  };
+
   return (
     <>
       <div className="flex flex-col items-center">
