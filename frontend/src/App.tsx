@@ -7,6 +7,7 @@ import SearchResultCard from './components/SearchResultCard';
 import Collection from './components/Collection';
 import Toast from './components/Toast';
 import { AuthProvider } from './components/AuthContext';
+import UserContext from './contexts/UserContext';
 
 export interface SearchResult {
   id: string;
@@ -17,13 +18,22 @@ export interface SearchResult {
 
 type ViewType = 'search' | 'collection';
 
-function App() {
+export default function App() {
+  const [user, setUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [view, setView] = useState<ViewType>('search');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+
+  const login = (userData) => {
+    setUser(userData);
+  };
+
+  const logout = () => {
+    setUser(null);
+  };
 
   const displayToast = (message: string) => {
     setToastMessage(message);
@@ -90,5 +100,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
