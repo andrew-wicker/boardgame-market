@@ -154,8 +154,10 @@ const dataController: DataController = {
   },
   removeGameFromCollection: async function (req, res, next) {
     // const game_id = res.locals.gamePrimaryKey;
-    const { game_id } = req.params;
+    const { game_id } = req.body;
     const { userId } = res.locals;
+    console.log('game_id', game_id);
+    console.log('userId', userId);
     const query = `DELETE FROM collections WHERE user_id = $1 AND game_id = $2`;
     try {
       const result = await pool.query(query, [userId, game_id]);

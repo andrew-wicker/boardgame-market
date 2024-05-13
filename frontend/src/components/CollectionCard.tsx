@@ -9,7 +9,9 @@ import Toast from './Toast';
 
 Modal.setAppElement('#root');
 
-interface CollectionCardProps extends GameFromCollection {}
+interface CollectionCardProps extends GameFromCollection {
+  removeGame: (gameId: number) => void;
+}
 
 export default function CollectionCard({
   game_id,
@@ -20,6 +22,7 @@ export default function CollectionCard({
   min_players,
   playing_time,
   title,
+  removeGame,
 }: CollectionCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -49,6 +52,7 @@ export default function CollectionCard({
     if (!user) {
       displayToast('You must be logged in to do that.');
       navigate('/main');
+      return;
     }
     try {
       const response = await fetch(`http://localhost:3000/data/collection`, {
@@ -65,6 +69,7 @@ export default function CollectionCard({
 
       if (response.ok) {
         displayToast('Game removed from collection');
+        removeGame(game_id);
       } else {
         const errorData = await response.json();
         displayToast(

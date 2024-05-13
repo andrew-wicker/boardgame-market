@@ -53,11 +53,16 @@ export default function Collection() {
         },
       );
       const data = await response.json();
-      console.log('data in fetchGameUseEffect: ', data);
       setGameCollection(data);
     } catch (error) {
       console.error('Failed to fetch game details: ', error);
     }
+  };
+
+  const handleRemoveGame = (gameId: number) => {
+    setGameCollection((current) =>
+      current.filter((game) => game.game_id !== gameId),
+    );
   };
 
   return (
@@ -68,6 +73,7 @@ export default function Collection() {
             <CollectionCard
               key={game.game_id}
               {...game}
+              removeGame={handleRemoveGame}
             />
           );
         })}

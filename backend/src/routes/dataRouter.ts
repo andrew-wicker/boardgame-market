@@ -5,7 +5,8 @@ import authController from '../controllers/authController';
 const router = express.Router();
 
 router.delete(
-  '/collection/:game_id',
+  // '/collection/:game_id',
+  '/collection',
   authController.verifyToken,
   dataController.removeGameFromCollection,
   (req, res) => {
