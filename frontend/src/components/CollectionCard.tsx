@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// import Accordion from './Accordion';
 import Modal from 'react-modal';
 import { GameFromCollection } from './Collection';
 import { Clock3, Users, Baby } from 'lucide-react';
