@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthProvider';
+import { useLocation } from 'react-router';
 import CollectionCard from './CollectionCard';
 
 export interface GameFromCollection {
@@ -22,15 +23,12 @@ export interface GameFromCollection {
   year_published: number;
 }
 
-interface CollectionProps {
-  view: string;
-}
-
-export default function Collection({ view }: CollectionProps) {
+export default function Collection() {
   const [gameCollection, setGameCollection] = useState<GameFromCollection[]>(
     [],
   );
   const { user } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     if (!user) {
@@ -38,12 +36,10 @@ export default function Collection({ view }: CollectionProps) {
       return;
     }
 
-    const userId = localStorage.getItem('userId');
-
     const fetchGameCollection = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/data/view/${userId}`,
+          `http://localhost:3000/data/view/${user.userId}`,
           {
             method: 'GET',
             headers: {
@@ -55,14 +51,13 @@ export default function Collection({ view }: CollectionProps) {
         const data = await response.json();
         console.log('data in fetchGameUseEffect: ', data);
         setGameCollection(data);
-        console.log('gameCollection: ', gameCollection);
       } catch (error) {
         console.error('Failed to fetch game details: ', error);
       }
     };
 
     fetchGameCollection();
-  }, [view, user]);
+  }, [user, location.pathname]);
 
   return (
     <>

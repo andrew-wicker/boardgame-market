@@ -1,39 +1,36 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SquareUserRound } from 'lucide-react';
 import Modal from 'react-modal';
 import AuthForm from './AuthForm';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthProvider';
 
 Modal.setAppElement('#root');
 
-type ViewType = 'search' | 'collection';
-
 interface TopBarProps {
-  setView: (value: ViewType) => void;
   displayToast: (message: string) => void;
 }
 
-export default function TopBar({ setView, displayToast }: TopBarProps) {
+export default function TopBar({ displayToast }: TopBarProps) {
   const [modalOpen, setModalOpen] = useState(false);
-  const { isAuthed, logout } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleAuthClick = () => {
-    if (isAuthed) {
+    if (user) {
       logout();
+      navigate('/');
+      displayToast('You have been logged out.');
     } else {
       setModalOpen(true);
     }
   };
 
   const handleCollectionClick = () => {
-    if (isAuthed) setView('collection');
+    if (user) navigate('/collection');
     else {
       displayToast('Please log in view your collection.');
     }
-  };
-
-  const handleKlaxClick = () => {
-    setView('search');
   };
 
   return (
@@ -46,7 +43,7 @@ export default function TopBar({ setView, displayToast }: TopBarProps) {
           />
           <div
             className="mt-2 text-4xl font-bold"
-            onClick={handleKlaxClick}
+            onClick={() => navigate('/')}
           >
             <button>K-LAX</button>
           </div>
@@ -66,7 +63,7 @@ export default function TopBar({ setView, displayToast }: TopBarProps) {
             onClick={handleAuthClick}
           >
             <SquareUserRound size={36} />
-            {isAuthed ? 'Logout' : 'Login'}
+            {user ? 'Logout' : 'Login'}
           </button>
           <Modal
             isOpen={modalOpen}

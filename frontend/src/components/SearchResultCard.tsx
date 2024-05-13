@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SearchResult } from '../App';
 import { GameDetailObject } from '../../../backend/src/lib/xmlParsingHelpers';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthProvider';
 import Cookies from 'js-cookie';
 
 interface SearchResultCardProps {
