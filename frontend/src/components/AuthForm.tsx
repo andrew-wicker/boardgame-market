@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { useAuth } from './AuthContext';
+// import { useAuth } from './AuthContext';
+import { useAuth } from './AuthProvider';
 interface AuthFormProps {
   closeModal: () => void;
 }
