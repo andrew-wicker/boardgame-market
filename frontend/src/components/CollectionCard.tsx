@@ -5,9 +5,12 @@ import { Clock3, Users, Baby } from 'lucide-react';
 
 Modal.setAppElement('#root');
 
-interface CollectionCardProps extends GameFromCollection {}
+interface CollectionCardProps extends GameFromCollection {
+  removeGame: (gameId: number) => void;
+}
 
 export default function CollectionCard({
+  game_id,
   description,
   image_url,
   max_players,
@@ -15,6 +18,7 @@ export default function CollectionCard({
   min_players,
   playing_time,
   title,
+  removeGame,
 }: CollectionCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -26,18 +30,23 @@ export default function CollectionCard({
     .replace(/&amp;/g, '&');
 
   return (
-    <div
-      className="mx-8 mb-8 flex h-80 w-72 flex-col items-center justify-center rounded-xl border border-b-night-800 border-l-night-800 shadow-lg"
-      onClick={() => setModalOpen(!modalOpen)}
-    >
+    <div className="mx-8 mb-8 flex h-80 w-72 flex-col items-center justify-center rounded-xl border border-b-night-800 border-l-night-800 shadow-lg">
       <div className=" flex max-w-48 items-center justify-center p-4">
         <img
           src={image_url}
           className="max-h-full max-w-full rounded-2xl shadow-lg"
+          onClick={() => setModalOpen(!modalOpen)}
         />
       </div>
-      <div className="mt-px h-24 w-full rounded-b-xl border-night-700 px-2">
+      <div className="mt-px flex h-24 flex-col justify-around rounded-b-xl border-night-700 px-2">
         <h3 className="text-pretty text-xl font-bold">{title}</h3>
+
+        <button
+          onClick={() => removeGame(game_id)}
+          className="rounded bg-emerald-700 px-4 py-2 font-bold hover:border-emerald-200 hover:bg-emerald-400 hover:text-emerald-100"
+        >
+          Remove Game
+        </button>
       </div>
       <Modal
         isOpen={modalOpen}

@@ -136,7 +136,7 @@ const dataController: DataController = {
     try {
       const games = await pool.query(collectionQuery, [user_id]);
 
-      console.log('result is: ', games.rows);
+      // console.log('result is: ', games.rows);
       res.locals.collection = games.rows;
       return next();
     } catch (err: unknown) {
@@ -154,10 +154,11 @@ const dataController: DataController = {
   },
   removeGameFromCollection: async function (req, res, next) {
     // const game_id = res.locals.gamePrimaryKey;
-    const { user_id, game_id } = req.params;
+    const { game_id } = req.params;
+    const { userId } = res.locals;
     const query = `DELETE FROM collections WHERE user_id = $1 AND game_id = $2`;
     try {
-      const result = await pool.query(query, [user_id, game_id]);
+      const result = await pool.query(query, [userId, game_id]);
       if (result.rowCount && result.rowCount > 0) {
         res
           .status(200)
